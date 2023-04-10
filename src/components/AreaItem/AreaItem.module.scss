@@ -1,0 +1,19 @@
+.wrapper{
+    display: flex;
+    justify-content: flex-start;
+    padding: 10px 10px;
+
+    :hover{
+        background-color: rgba(22,24, 35, 0.03);
+    }
+}
+.info{
+    width: 100%;
+    padding: 0 0px;
+    display: inline;
+}
+.name{
+    width: 100px;
+    display: flex;
+    justify-content: space-around;
+}

@@ -1,0 +1,80 @@
+.main-login{
+    display: flex;
+    // align-items: center;
+    // justify-content: center;
+    flex-direction: row;
+    justify-content: flex-start;
+    height: 600px;
+    box-sizing: border-box;
+}
+.left-login{
+    width: 70%;
+    box-sizing: border-box;
+}
+.left-login img{
+    margin-top: 60px;
+    background-size: contain;
+    width: 100%;
+    height: 100%;
+}
+form[name="loginForm"]{
+    margin-top: 50px;
+    width: 25%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    // justify-content: space-evenly;
+}
+form input[name='username']{
+    height: 50px;
+    border-radius: 10px;
+    border: 0.5px solid darkgrey;
+}
+form input[name='password']{
+    height: 50px;
+    border-radius: 10px;
+    border: 0.5px solid darkgrey;
+}
+
+.checkbox{
+    display: flex;
+}
+.checkbox input{
+    width: 5%;
+    height: 20px;
+    margin-right: 5px;
+}
+#submit{
+    height: 50px;
+    border-radius: 10px;
+    border: 0.5px solid darkgrey;
+}
+form button{
+    height: 50px;
+    background-color: #87CEFA;
+    border-radius: 20px;
+    border: none;
+}
+a{
+    color: black;
+    margin-bottom:15px ;
+}
+.image-social img{
+    width: 20px;
+    height: 20px;
+}
+.footer-login{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.footer-login p {
+    margin-bottom: 15px;
+}
+.image-social{
+    margin-top: 10px;
+    width: 40%;
+    display: flex;
+    justify-content: space-between;
+}

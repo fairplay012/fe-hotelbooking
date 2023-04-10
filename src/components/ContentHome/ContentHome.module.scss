@@ -1,0 +1,29 @@
+.main-content{
+    height: auto;
+    width: 80%;
+    margin-top: 20px;   
+}
+.main-content h1{
+    color: white;
+}
+.hotel-item{
+    display: flex;
+    margin-bottom: 40px;
+    border: 1px solid grey;
+    border-radius: 10px;
+}
+.image-hotels img{
+    width: 200px;
+    height: 200px;
+    padding: 20px;
+}
+.info-hotels{
+    padding-left: 20px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+span{
+    font-weight: bold;
+}

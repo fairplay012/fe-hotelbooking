@@ -27,3 +27,17 @@
 span{
     font-weight: bold;
 }
+.booking-button{
+    display: flex;
+    align-items: center;
+    margin-right: 10px;
+}
+.booking-button button{
+    background-color: #e30050;
+    border-radius: 5px;
+    color: white;
+    height: 50px;
+    width: 80px;
+    border: none;
+    font-size: 20px;
+}

@@ -14,7 +14,7 @@ function Header() {
                 <div className={cx('navi-right')}>
                     <img src={require('./icons8-vietnam-48.png')} alt="Vietnam" />
                     <p>Dịch vụ đặt phòng khách sạn</p>
-                    <button>Đăng nhập</button>
+                    <button><Link to='/login'>Đăng nhập</Link></button>
                     <button>Đăng kí</button>
                 </div>
             </nav>

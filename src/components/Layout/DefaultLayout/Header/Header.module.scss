@@ -27,16 +27,7 @@ header{
     align-items: center;
     margin-left: 20%;
 }
-.navi-right button{
-    background-color: white;
-    // color: #ff9c00;
-    font-size: 15px;
-    font-weight: bold;
-    border-radius: 10px;
-    border: none;
-    height: 40px;
-    width: 12%;
-}
+
 .list{
    width: 100%;
    height: auto;
@@ -49,6 +40,10 @@ header{
 .list li{
     width: 12%;
     padding-right: 20px;
+    
+}
+.list li a{
+    text-decoration: none;
 }
 .list li button{
     // background-color: #ff9c00;

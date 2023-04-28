@@ -24,19 +24,20 @@
     height: 50px;
     width: 200px;
     border: none;
+    cursor: pointer;
     font-size: 20px;
 }
 .under-booking{
     height: auto;
     margin-left: 100px;
 }
-.under-booking ul{
+.under-booking .list-button{
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
     list-style: none;
 }
-.under-booking ul li{
+.under-booking .list-button button{
     height: 40px;
     text-align: center;
     margin-right: 5px;
@@ -47,4 +48,89 @@
     padding-left: 15px;
     padding-right: 15px;
     padding-top: 10px;
+    cursor: pointer;
+}
+.information{
+    margin-top: 0px;
+    border: 1px solid grey;
+    height: 150px;
+    width: 70%;
+    display: flex;
+    align-items: center;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+.comment{
+    margin-top: 0px;
+    border: 1px solid grey;
+    height: auto;
+    width: 70%;
+    padding: 20px 20px;
+}
+.form-comment{
+    margin-top: 20px;
+}
+.input-comment{
+    margin-top:40px;
+    border: 2px solid orange;
+    padding: 30px 20px
+}
+.avatar-comment{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 100px;
+    background-color: #C0C0C0;
+    margin-right: 20px;
+}
+.form-comment input[name="comment"]{
+    height: 50px;
+}
+.form-comment input[name="name"]{
+    width: 300px;
+}
+.form-comment input[name="email"]{
+    width: 300px;
+}
+.input-comment button{
+    width: 100px;
+    cursor: pointer;
+}
+.form-booking{
+    width: 500px;
+}
+.booking-button:focus + .form-booking{
+    display: block;
+    position: fixed;
+    top: 50;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 9999;
+}
+.form-booking {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10000;
+    padding: 30px;
+    background-color: #fff;
+    border-radius: 5px;
+}
+.form-header{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.form-header h3{
+    width: 70%;
+}
+.show-comments{
+    margin-top: 20px;
+    display: flex;
+    justify-content: flex-start;
 }

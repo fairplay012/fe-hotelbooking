@@ -239,37 +239,44 @@ function BookingItem(){
       
       }
 
-
+      //room
     const roomArray = dataHotel?.rooms
-    // console.log("datahotel:",dataHotel);
-    // console.log("rooms:",roomArray);
-    // console.log("dataRoom", dataRoom);
-
     const room1 = roomArray?.map(item =>{
         const listRoomHotel=  dataRoom.find(roomFind => roomFind._id === item)
-        // console.log("listRoomHotel",listRoomHotel);
         return listRoomHotel
     })
-
-
     const rooms = room1?.map(itemRoom =>
         <option value={itemRoom?.name}>{itemRoom?.name}</option>                                                        
     )
     const roomChoose = dataRoom.find(item => item?.name === roomSelect)
 
-
+    // utility
     const utisArray = dataHotel?.utis
-    const utis = utisArray?.map(itemUti =>
-        <option value={itemUti}>{itemUti}</option>
-    )
-    const utisChoose = dataUti.find(item => item?.type=== utiSelect)
 
+    const uti1 = utisArray?.map(item =>{
+        const listUti=  dataUti.find(utiFind => utiFind._id === item)
+        return listUti
+    })
+    const utis = uti1?.map(itemUti =>
+        <option value={itemUti?.type}>{itemUti?.type}</option>
+    )
+    const utisChoose = dataUti.find(item => item?.type === utiSelect)
+
+    //transportation
     const transArray = dataHotel?.trans
-    const trans = transArray?.map(itemTrans =>
-        <option value={itemTrans}>{itemTrans}</option>
+
+    const trans1 = transArray?.map(item =>{
+        const listTrans=  dataTrans.find(transFind => transFind._id === item)
+        return listTrans
+    })
+
+    const trans = trans1?.map(itemTrans =>
+        <option value={itemTrans?.type}>{itemTrans?.type}</option>
     )
     const transChoose = dataTrans?.find(item => item?.type === transSelect)
 
+
+    //comment
     const commentArray = dataReview?.filter(item => item?.hotel === hotelId)
       const  renderComment = commentArray.map(item =>
                 <div className={cx('show-comments')}>
@@ -290,7 +297,7 @@ function BookingItem(){
             </div>
                     <div className={cx('info-booking')}>            
                         <h1>{dataHotel?.name}</h1>
-                        <span>1,980,000 ₫</span>
+                        {/* <span>1,980,000 ₫</span> */}
                         <p>{dataHotel?.description}</p>  
                         <Link to={ `/room/${hotelId}`}>
                         <button>

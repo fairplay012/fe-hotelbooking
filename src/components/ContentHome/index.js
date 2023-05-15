@@ -14,7 +14,7 @@ function ContentHome(props) {
                 </div>
                 <div className={cx('info-hotels')}>
                     <h2>{item.name}</h2>
-                    <span>1,980,000 ₫</span>
+                    {/* <span>1,980,000 ₫</span> */}
                     <p>{item.area}</p>
                     <p>{item.description}</p>
                 </div>

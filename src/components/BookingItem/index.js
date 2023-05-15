@@ -162,9 +162,11 @@ function BookingItem(){
           console.log(dataBooking[i].rooms);
           console.log(roomSelect);
         
-        //   if(roomChoose.quantity !== 0){
-        //     return true
-        //   } else{
+          if(roomChoose.quantity > 0){
+            return true
+          } if(roomChoose.quantity === 0){
+            return false
+          }else{
               if(roomSelect === dataBooking[i].rooms){
                   // Kiểm tra ngày đặt phòng mới có bị trùng với các đặt phòng khác hay không
                   if (
@@ -174,7 +176,7 @@ function BookingItem(){
                     return false;
                   }
                 }
-        //   }
+          }
         }  
         return true;
       }
@@ -202,7 +204,7 @@ function BookingItem(){
     const handleSubmit = (e) => {
         e.preventDefault();
         if (!checkBookingDate(startDate, endDate)) {
-            alert(`Ngày đặt phòng đã bị trùng với các đặt phòng khác trong khoang ngay ${startDate} den ${endDate}`);
+            alert(`Ngày đặt phòng đã bị trùng`);
             return;
         } else{
             axios

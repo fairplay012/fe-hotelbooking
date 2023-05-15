@@ -2,6 +2,7 @@ import classNames from "classnames/bind";
 import styles from "./SideBar.module.scss";
 // import Tippy from "@tippyjs/react";
 import { useEffect, useState } from "react";
+import axios from "axios";
 
 const cx = classNames.bind(styles);
 
@@ -18,12 +19,17 @@ function SideBar(props) {
 
 
   useEffect(() => {
-    fetch(`http://localhost:5000/api/hotel/findArea/${searchResult}`)
-      .then((res) => res.json(res))
-      .then((res) => {
-        setData(res)
-        // sendData(res)
-      });
+      const axiosGetArea = async()=>{
+        await axios.get(`http://localhost:5000/api/hotel/findArea/${searchResult}`)
+              .then(response => {
+                  setData(response.data); 
+                  console.log(response.data);
+              })
+              .catch(error => {
+                  console.log(error);
+              });
+    }
+    axiosGetArea();
   }, [searchResult]);
 
   return (
@@ -32,7 +38,7 @@ function SideBar(props) {
         <h1>Search</h1>
         
           <div>
-            <label>Tên chỗ nghỉ/ điểm đến:</label>
+            <label>Search hotels by area:</label>
             <br />
             <input
               value={searchResult}
@@ -40,7 +46,7 @@ function SideBar(props) {
             />
             <br />
           </div>       
-          <div>
+          {/* <div>
             <label>Ngày nhận phòng:</label>
             <br />
             <input />
@@ -57,7 +63,7 @@ function SideBar(props) {
             <br />
             <input />
             <br />
-          </div>
+          </div> */}
         <button onClick={sendData(data)} className={cx("search-button")}>Search</button>
       </form>
     </div>

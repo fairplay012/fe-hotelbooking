@@ -30,8 +30,9 @@ function Login() {
   useEffect(() => {
     if (data.accessToken) {
       localStorage.setItem("accessToken", data.accessToken);
+      localStorage.setItem("userId", data._id);
       console.log(data.accessToken);
-      window.location.href = "/";
+      window.location.href = "/home";
     }
   }, [data]);
 

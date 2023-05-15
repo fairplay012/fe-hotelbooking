@@ -3,12 +3,14 @@ import styles from "./Header.module.scss";
 import { Link } from "react-router-dom";
 import { Avatar, Box, Divider, IconButton, ListItemIcon, Menu, MenuItem, Tooltip } from "@mui/material";
 import { Logout, Settings } from "@mui/icons-material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 
 const cx = classNames.bind(styles);
 
 function Header() {
+  const [user, setUser] = useState()
 
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
@@ -18,6 +20,32 @@ function Header() {
     const handleClose = () => {
       setAnchorEl(null);
     };
+
+
+    const access_token = localStorage.getItem('accessToken')  
+    const userId = localStorage.getItem('userId')
+
+
+    const axiosUser = async()=>{
+      await axios.get(`http://localhost:5000/api/user/find/${userId}`,{
+        headers:{
+          'Token': `Bearer ${access_token}`
+        }
+      })
+             .then(response => {
+              setUser(response.data); 
+             })
+             .catch(error => {
+                 console.log(error);
+             });
+      }
+  // const clear =()=>{
+  //     localStorage.clear()
+  // }
+
+  useEffect(() =>{
+    axiosUser()
+  },[])
 
   return (
     <header>
@@ -82,7 +110,7 @@ function Header() {
                 anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
                 >
                 <MenuItem onClick={handleClose}>
-                    <Avatar /> Manh
+                    <Avatar /> {user?.username}
                 </MenuItem>
                 <Divider />
                 <MenuItem onClick={handleClose}>
@@ -95,7 +123,9 @@ function Header() {
                     <ListItemIcon>
                     <Logout fontSize="small" />
                     </ListItemIcon >
-                    <Link to="/login" style={{textDecoration: "none", margin: "0px"}} >Logout</Link>
+                    <Link to="/" style={{textDecoration: "none", margin: "0px"}}
+                    //  onClick={clear()}
+                      >Logout</Link>
                 </MenuItem>
                 </Menu>
           </div>
@@ -105,7 +135,7 @@ function Header() {
         <li>
           <button>
             {" "}
-            <Link to="/">Home</Link>
+            <Link to="/home">Home</Link>
           </button>
         </li>
         <li>

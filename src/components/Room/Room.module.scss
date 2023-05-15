@@ -1,0 +1,15 @@
+.main-room{
+    margin-top: 50px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    row-gap: 50px;
+    column-gap: 40px;
+}
+.room-item{
+    margin-left: 40px;
+    width: 100%;
+}
+.room-item img{
+    width: 600px;
+    height: 500px;
+}

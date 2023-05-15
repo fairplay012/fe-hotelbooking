@@ -5,18 +5,20 @@ import Login from "../pages/Login"
 import Introduction from "../pages/Introduction"
 import Payment from "../pages/Payment"
 import Uti from "../components/Uti"
+import Room from "../components/Room"
 import Register from "../pages/Register"
 
 
 const publicRoutes = [
-    {path:'/login', component: Login, layout : null},
-    {path:'/', component: Home},
+    {path:'/', component: Login, layout : null},
+    {path:'/home', component: Home},
     {path:'/booking/:hotelId', component: Booking, layout : null},
     {path:'/hotels', component: Hotels},
     {path:'/register', component: Register, layout : null},
     {path:'/introduction', component: Introduction, layout : null},
     {path:'/payment', component: Payment, layout : null},
     {path:'/uti', component: Uti, layout : null},
+    {path:'/room/:hotelIdRoom', component: Room, layout : null},
 ]
 
 const privateRoutes=[]

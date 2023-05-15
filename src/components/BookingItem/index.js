@@ -7,6 +7,8 @@ import { useEffect, useState} from "react";
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserTie, faXmark } from "@fortawesome/free-solid-svg-icons";
+import { Link } from "react-router-dom";
+import moment from 'moment';
 
 
 const cx = classNames.bind(styles)
@@ -14,7 +16,9 @@ const cx = classNames.bind(styles)
 function BookingItem(){
     const {hotelId} = useParams();
 
+    const[user, setUser] = useState()
     const[customer, setCustomer] = useState('')
+
     const[startDate, setStartDate] = useState('')
     const[endDate, setEndDate] = useState('')
     const[email, setEmail] = useState('')
@@ -29,38 +33,19 @@ function BookingItem(){
     const[utiSelect, setUtiSelect] = useState()
     const[transSelect, setTransSelect] = useState()
     const[comment, setComment] = useState('')
-    const[nameComment, setNameComment] = useState('')
-    const[emailComment, setEmailComment] = useState('')
+    const[dataBooking, setDataBooking] = useState([])
+    // const[nameComment, setNameComment] = useState('')
+    // const[emailComment, setEmailComment] = useState('')
     const[dataReview, setDataReview] = useState([])
 
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        axios
-          .post("http://localhost:5000/api/booking/addBooking",{ 
-            "startDate":startDate,
-            "endDate":endDate,
-            "Note":"abc",
-            "customer":customer,
-            "email":email,
-            "trans":transChoose?.type,
-            "rooms":roomChoose?.name,
-            "utis":utisChoose?.type})
-            
-          .then((response) => {
-            console.log(response.data);
-          })
-          .catch((error) => {
-            console.error(error);
-          });
-      }
 
       const handleComment = (e) => {
         e.preventDefault();
         axios
           .post("http://localhost:5000/api/review/addReview",{ 
-            "name":nameComment,
-            "email":emailComment,
+            "name":user?.username,
+            // "email":emailComment,
             "comment":comment,
             "hotel":dataHotel?._id
         })        
@@ -135,18 +120,138 @@ function BookingItem(){
                    console.log(error);
                });
     }
+
+    const axiosGetBooking = async()=>{
+        await axios.get('http://localhost:5000/api/booking/findAll')
+               .then(response => {
+                   setDataBooking(response.data); 
+               })
+               .catch(error => {
+                   console.log(error);
+               });
+    }
+
+
+    const access_token = localStorage.getItem('accessToken')  
+    const userId = localStorage.getItem('userId')
+
+
+    const axiosUser = async()=>{
+      await axios.get(`http://localhost:5000/api/user/find/${userId}`,{
+        headers:{
+          'Token': `Bearer ${access_token}`
+        }
+      })
+             .then(response => {
+              setUser(response.data); 
+             })
+             .catch(error => {
+                 console.log(error);
+             });
+      }
+
     
+      //check date
+      function checkBookingDate(checkInDate, checkOutDate) {
+        const newCheckInDate = moment(checkInDate);
+        const newCheckOutDate = moment(checkOutDate);
+      
+        for (let i = 0; i < dataBooking.length; i++) {
+          const existingCheckInDate = moment(dataBooking[i].startDate);
+          const existingCheckOutDate = moment(dataBooking[i].endDate);
+          console.log(dataBooking[i].rooms);
+          console.log(roomSelect);
+        
+        //   if(roomChoose.quantity !== 0){
+        //     return true
+        //   } else{
+              if(roomSelect === dataBooking[i].rooms){
+                  // Kiểm tra ngày đặt phòng mới có bị trùng với các đặt phòng khác hay không
+                  if (
+                    newCheckInDate.isBetween(existingCheckInDate, existingCheckOutDate, null, '[]') ||
+                    newCheckOutDate.isBetween(existingCheckInDate, existingCheckOutDate, null, '[]')
+                  ){
+                    return false;
+                  }
+                }
+        //   }
+        }  
+        return true;
+      }
+
     useEffect(()=>{
         axiosPostRoom();   
         axiosPostTrans();
         axiosPostUti();
-        axiosPostComment()
+        axiosPostComment();
+        axiosUser();
+        axiosGetBooking();
     },[])
+
+        const axiosUpdateRoom = async (id, updatedRoom) => {
+            await axios.put(`http://localhost:5000/api/room/${id}`, updatedRoom)
+              .then(response => {
+                console.log(response.data);
+              })
+              .catch(error => {
+                console.log(error);
+              });
+          }
+
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        if (!checkBookingDate(startDate, endDate)) {
+            alert(`Ngày đặt phòng đã bị trùng với các đặt phòng khác trong khoang ngay ${startDate} den ${endDate}`);
+            return;
+        } else{
+            axios
+              .post("http://localhost:5000/api/booking/addBooking",{ 
+                "startDate":startDate,
+                "endDate":endDate,
+                "Note":"abc",
+                "customer":customer,
+                "email":email,
+                "trans":transChoose?.type,
+                "rooms":roomChoose?.name,
+                "utis":utisChoose?.type,
+                "hotel": dataHotel?.name,
+            })              
+              .then((response) => {
+                console.log(response.data);
+                alert(`Booking successfully`);
+                console.log(roomChoose);
+                axiosUpdateRoom(roomChoose._id, {
+                    "name": roomChoose.name,
+                    "price":roomChoose.price,
+                    "description": roomChoose.description,
+                    "imgURL": roomChoose.imgURL,
+                    "hotel":roomChoose.hotel,
+                    "quantity":roomChoose.quantity - 1,
+                });
+              })
+              .catch((error) => {
+                console.error(error);
+              });
+        }
+      
+      }
 
 
     const roomArray = dataHotel?.rooms
-    const rooms = roomArray?.map(itemRoom =>
-        <option value={itemRoom}>{itemRoom}</option>                                                        
+    // console.log("datahotel:",dataHotel);
+    // console.log("rooms:",roomArray);
+    // console.log("dataRoom", dataRoom);
+
+    const room1 = roomArray?.map(item =>{
+        const listRoomHotel=  dataRoom.find(roomFind => roomFind._id === item)
+        // console.log("listRoomHotel",listRoomHotel);
+        return listRoomHotel
+    })
+
+
+    const rooms = room1?.map(itemRoom =>
+        <option value={itemRoom?.name}>{itemRoom?.name}</option>                                                        
     )
     const roomChoose = dataRoom.find(item => item?.name === roomSelect)
 
@@ -184,12 +289,17 @@ function BookingItem(){
                     <div className={cx('info-booking')}>            
                         <h1>{dataHotel?.name}</h1>
                         <span>1,980,000 ₫</span>
-                        <p>{dataHotel?.description}</p>                    
+                        <p>{dataHotel?.description}</p>  
+                        <Link to={ `/room/${hotelId}`}>
+                        <button>
+                            VIEW ROOM
+                        </button>
+                        </Link>                
                         <button onClick={showBooking}>
                             BOOKING NOW
                         </button>   
                     </div>
-            </div>
+        </div>
         {
         booking &&
         <div className={cx('booking-button')}>            
@@ -215,28 +325,44 @@ function BookingItem(){
                             <input type="date" value={endDate} onChange={e => setEndDate((e.target.value))}/>
                         </div>
                         <div className={cx('room')}>
-                            <label>Room</label><br/><br/>
+                            <div>
+                            <label>Room: </label>
                             <select id="room" name="roomlist"  onChange={e => setRoomSelect(e.target.value)}>
                                 {rooms}
                             </select>
-                            <label>Price: </label>
-                            <span>{roomChoose?.price} dong</span>
+                            </div>
+                            <div>
+                                <label>Quantity: </label>
+                                <span>{roomChoose?.quantity}</span>
+                            </div>
+                            <div>
+                                <label>Price: </label>
+                                <span>{roomChoose?.price} dong</span>
+                            </div>
                         </div>
                         <div className={cx('uti')}>
-                            <label>Utilities</label><br/><br/>
-                            <select id="uti" name="utilist" onChange={e => setUtiSelect(e.target.value)}>
-                                {utis}
-                            </select>
-                            <label>Price: </label>
-                            <span>{utisChoose?.price} dong</span>
+                            <div>
+                                <label>Utilities</label>
+                                <select id="uti" name="utilist" onChange={e => setUtiSelect(e.target.value)}>
+                                    {utis}
+                                </select>
+                            </div>
+                            <div>
+                                <label>Price: </label>
+                                <span>{utisChoose?.price} dong</span>
+                            </div>
                         </div>
                         <div className={cx('trans')}>
-                            <label>Transportation</label><br/><br/>
-                            <select id="trans" name="translist" onChange={e => setTransSelect(e.target.value)}>
-                                {trans}
-                            </select>
-                            <label>Price: </label>
-                            <span>{transChoose?.price} dong</span>
+                            <div>
+                                <label>Transportation</label>
+                                <select id="trans" name="translist" onChange={e => setTransSelect(e.target.value)}>
+                                    {trans}
+                                </select>
+                            </div>
+                            <div>
+                                <label>Price: </label>
+                                <span>{transChoose?.price} dong</span>
+                            </div>
                         </div>
                         <button type="submit" value="Submit">Book</button>
                     </form>
@@ -244,15 +370,15 @@ function BookingItem(){
         }
         <div className={cx('under-booking')}>
             <div className={cx('list-button')} >
-                <button onClick={handleShowInfo}>MÔ TẢ</button>
+                <button onClick={handleShowInfo}>DESCRIBE</button>
                 
-                <button> THÔNG TIN BỔ SUNG</button>
-                <button onClick={handleShowComment}>ĐÁNH GIÁ</button>
+                <button> ADDITIONAL INFORMATION</button>
+                <button onClick={handleShowComment}>EVALUATE</button>
             </div>
                 {
                 showInformation &&
                 <div className={cx('information')}>
-                    Đặt phòng tại {dataHotel?.name} - {dataHotel?.description}
+                    Book a room at {dataHotel?.name} - {dataHotel?.description}
                 </div>                          
                 }
                 {
@@ -261,14 +387,15 @@ function BookingItem(){
                     <h1> Comments: </h1>
                         {renderComment}
                     <div className={cx('input-comment')}>
-                        <h1>Hay dua ra nhan xet cho {dataHotel?.name}</h1>
+                        <h1>Give your review {dataHotel?.name}</h1>
                         <form className={cx('form-comment')}>
                             <label>Your Comments:</label><br/>
                             <input type="text" id="u-comment" name="comment" value={comment} onChange={e=> setComment(e.target.value)}/><br/>
-                            <label>Name:</label><br/>
+                            
+                            {/* <label>Name:</label><br/>
                             <input type="text" id="name" name="name" value={nameComment} onChange={e=> setNameComment(e.target.value)}/><br/><br/>
                             <label>Email:</label><br/>
-                            <input type="text" id="email" name="email" value={emailComment} onChange={e=> setEmailComment(e.target.value)}/><br/><br/>
+                            <input type="text" id="email" name="email" value={emailComment} onChange={e=> setEmailComment(e.target.value)}/><br/><br/> */}
                             <button type="submit" value="Submit" onClick={handleComment}>Send</button>
                         </form> 
                     </div>
@@ -277,6 +404,6 @@ function BookingItem(){
         </div>
         <Footer/>
     </div>);
-}
+}   
 
 export default BookingItem;

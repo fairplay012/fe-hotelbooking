@@ -17,7 +17,7 @@ const publicRoutes = [
     {path:'/register', component: Register, layout : null},
     {path:'/introduction', component: Introduction, layout : null},
     {path:'/payment', component: Payment, layout : null},
-    {path:'/uti', component: Uti, layout : null},
+    {path:'/uti/:hotelIdUti', component: Uti, layout : null},
     {path:'/room/:hotelIdRoom', component: Room, layout : null},
 ]
 

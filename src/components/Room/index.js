@@ -35,9 +35,37 @@ function Room() {
 
     const renderRoom = roomArray.map((item) =>
             <div className={cx('room-item')} key={item._id}>
-                <img src={item.imgURL} alt="room"/>
-                <h2>{item.name}</h2>
-                <p>{item.price}</p>
+                <img style={{marginBottom:20}} src={item.imgURL} alt="room"/>
+                <h2 style={{paddingBottom:20}}>{item.name}</h2>
+                <div style={{display:"flex", justifyContent:"space-between", boxSizing:"border-box", width:"600px", marginBottom:20}}>
+
+                    <div style={{display:"flex", width:"150px", border:"1px solid black" ,
+                        borderLeft:"none",
+                        borderTop:"none",
+                        borderBottom:"none",
+                        fontSize:18}}>
+                        <p style={{paddingRight:"10px"}}>Price </p>
+                        <span>{item.price}</span>
+                    </div>
+                    <div style={{display:"flex",  width:"150px",border:"1px solid black" ,
+                        borderLeft:"none",
+                        borderTop:"none",
+                        borderBottom:"none", fontSize:18}}>
+                        <p style={{paddingRight:"10px"}}>View </p>
+                        <span>City</span>
+                    </div>
+                    <div style={{display:"flex", width:"150px",fontSize:18}}>
+                        <p style={{paddingRight:"10px"}}>Capacity</p>
+                        <p style={{width: "100px"}}>
+                            <span> 3 </span>                      
+                        </p>
+                    </div>
+                    
+                </div>
+                <div style={{display:"flex", width:"600px", fontSize:18}}>
+                    <p style={{paddingBottom:"15px", marginRight:20}}> <span>Description: </span></p>
+                    <p>{item.description}</p>
+                </div>
             </div>
             )
     return ( <div>

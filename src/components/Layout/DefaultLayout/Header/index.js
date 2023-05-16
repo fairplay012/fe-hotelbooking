@@ -55,7 +55,7 @@ function Header() {
         </div>
         <div className={cx("navi-right")}>
           <img src={require("./icons8-vietnam-48.png")} alt="Vietnam" />
-          <p>Dịch vụ đặt phòng khách sạn</p>
+          <p>Find hotels for tourists</p>
           <div>
                 <Box
                 sx={{

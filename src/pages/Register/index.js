@@ -42,9 +42,9 @@ function Register() {
             "password": password
           });
           setData(response.data);
-          console.log(response.data);
+          alert("Register successfully")
         //   createNotification('success')
-          window.location.href = "/login";
+          window.location.href = "/";
         } catch (error) {
           console.log(error);
         }

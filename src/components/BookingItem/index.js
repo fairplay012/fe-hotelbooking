@@ -153,14 +153,18 @@ function BookingItem(){
     
       //check date
       function checkBookingDate(checkInDate, checkOutDate) {
-        const newCheckInDate = moment(checkInDate);
-        const newCheckOutDate = moment(checkOutDate);
-      
+        const newCheckInDate = moment(checkInDate).format('YYYY-MM-DD');
+        const newCheckOutDate = moment(checkOutDate).format('YYYY-MM-DD');
+
+        const isDateBefore = (newCheckInDate, newCheckOutDate) => {
+            return moment(newCheckInDate).isBefore(newCheckOutDate);
+        }
+
         for (let i = 0; i < dataBooking.length; i++) {
           const existingCheckInDate = moment(dataBooking[i].startDate);
           const existingCheckOutDate = moment(dataBooking[i].endDate);
-          console.log(dataBooking[i].rooms);
-          console.log(roomSelect);
+          console.log(existingCheckInDate);
+          console.log(existingCheckOutDate);
         
           if(roomChoose.quantity > 0){
             return true
@@ -173,6 +177,9 @@ function BookingItem(){
                     newCheckInDate.isBetween(existingCheckInDate, existingCheckOutDate, null, '[]') ||
                     newCheckOutDate.isBetween(existingCheckInDate, existingCheckOutDate, null, '[]')
                   ){
+                    return false;
+                  }
+                  if(!isDateBefore()){
                     return false;
                   }
                 }
@@ -203,8 +210,8 @@ function BookingItem(){
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        if (!checkBookingDate(startDate, endDate)) {
-            alert(`Ngày đặt phòng đã bị trùng`);
+        if (!checkBookingDate(startDate, endDate)){
+            alert(`Ngày đặt phòng đã bị trùng hoặc ngày bắt đầu đứng sau ngày kết thúc`);
             return;
         } else{
             axios
@@ -222,7 +229,7 @@ function BookingItem(){
               .then((response) => {
                 console.log(response.data);
                 alert(`Booking successfully`);
-                console.log(roomChoose);
+
                 axiosUpdateRoom(roomChoose._id, {
                     "name": roomChoose.name,
                     "price":roomChoose.price,
@@ -231,6 +238,7 @@ function BookingItem(){
                     "hotel":roomChoose.hotel,
                     "quantity":roomChoose.quantity - 1,
                 });
+                showBooking();
               })
               .catch((error) => {
                 console.error(error);
@@ -273,9 +281,10 @@ function BookingItem(){
     const trans = trans1?.map(itemTrans =>
         <option value={itemTrans?.type}>{itemTrans?.type}</option>
     )
+
     const transChoose = dataTrans?.find(item => item?.type === transSelect)
 
-
+console.log(utiSelect);
     //comment
     const commentArray = dataReview?.filter(item => item?.hotel === hotelId)
       const  renderComment = commentArray.map(item =>
@@ -297,11 +306,15 @@ function BookingItem(){
             </div>
                     <div className={cx('info-booking')}>            
                         <h1>{dataHotel?.name}</h1>
-                        {/* <span>1,980,000 ₫</span> */}
                         <p>{dataHotel?.description}</p>  
                         <Link to={ `/room/${hotelId}`}>
                         <button>
                             VIEW ROOM
+                        </button>
+                        </Link> 
+                        <Link to={ `/uti/${hotelId}`}>
+                        <button>
+                            VIEW UTILITIES
                         </button>
                         </Link>                
                         <button onClick={showBooking}>

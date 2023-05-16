@@ -38,10 +38,10 @@ function Footer() {
         <div className={cx('news')}>
             <h3>News</h3>
             <ul>
-                <li>Bản tin du lịch Việt</li>
-                <li>Cẩm nang du lịch</li>
-                <li>Tư vấn du lịch</li>
-                <li>Tuyển dụng du lịch</li>
+                <li>Vietnam tourism newsletter</li>
+                <li>Travel Guide</li>
+                <li>Tour</li>
+                <li>Tourism recruitment</li>
             </ul>
         </div>
         <div className={cx('popular')}>

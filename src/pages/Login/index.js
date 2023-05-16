@@ -2,6 +2,7 @@ import classNames from "classnames/bind";
 import styles from "./Login.module.scss";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 const cx = classNames.bind(styles);
 
@@ -86,7 +87,10 @@ function Login() {
         </button>
         <div className={cx("footer-login")}>
           <a href="#/">Forgot password</a>
-          <p>Don't have an account? Create one</p>
+          <p>Don't have an account? <Link to={ `/register`}>
+                        Create one
+                        </Link>
+                        </p>
           <p>or continue with</p>
           <div className={cx("image-social")}>
             <img
